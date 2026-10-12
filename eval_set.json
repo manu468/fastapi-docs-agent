@@ -1,0 +1,22 @@
+[
+  {"question": "How do I run something after sending the response to the client?", "expected": ["tutorial/background-tasks.md"], "must_contain": ["add_task"]},
+  {"question": "Why is my frontend on another domain blocked from calling my API?", "expected": ["tutorial/cors.md"], "must_contain": ["allow_origins"]},
+  {"question": "How do I package my app into a container image?", "expected": ["deployment/docker.md"], "must_contain": ["FROM python", "docker build"]},
+  {"question": "How do I send an error response with a specific status code when something isn't found?", "expected": ["tutorial/handling-errors.md"], "must_contain": ["Item not found"]},
+  {"question": "How can users upload a photo to my API?", "expected": ["tutorial/request-files.md"], "must_contain": ["create_upload_file"]},
+  {"question": "How do I receive data from an HTML login form instead of JSON?", "expected": ["tutorial/request-forms.md"], "must_contain": ["Annotated[str, Form()]"]},
+  {"question": "How do I share the same logic, like pagination parameters, across many endpoints?", "expected": ["tutorial/dependencies/index.md", "tutorial/dependencies/classes-as-dependencies.md"], "must_contain": ["common_parameters", "Depends(CommonQueryParams)"]},
+  {"question": "How do I run setup code once when the app starts and cleanup when it stops?", "expected": ["advanced/events.md"], "must_contain": ["lifespan=lifespan"]},
+  {"question": "How do I read configuration like secrets from environment variables?", "expected": ["advanced/settings.md", "environment-variables.md"], "must_contain": ["BaseSettings"]},
+  {"question": "How can I return HTML pages rendered from templates?", "expected": ["advanced/templates.md"], "must_contain": ["TemplateResponse"]},
+  {"question": "How do I push real-time messages to a browser over a persistent connection?", "expected": ["advanced/websockets.md", "tutorial/server-sent-events.md"], "must_contain": ["websocket.accept", "EventSourceResponse"]},
+  {"question": "How do I write automated tests for my endpoints?", "expected": ["tutorial/testing.md"], "must_contain": ["client = TestClient(app)"]},
+  {"question": "How do I store my data in a relational database?", "expected": ["tutorial/sql-databases.md"], "must_contain": ["create_engine"]},
+  {"question": "How do I make sure a password field is never returned to the client?", "expected": ["tutorial/response-model.md", "tutorial/extra-models.md"], "must_contain": ["UserOut"]},
+  {"question": "How do I return 201 instead of 200 when creating something?", "expected": ["tutorial/response-status-code.md"], "must_contain": ["status_code=201"]},
+  {"question": "How do I limit a query string parameter to a maximum number of characters?", "expected": ["tutorial/query-params-str-validations.md"], "must_contain": ["max_length=50"]},
+  {"question": "How do I run code for every request and response that passes through my app?", "expected": ["tutorial/middleware.md", "advanced/middleware.md"], "must_contain": ["@app.middleware"]},
+  {"question": "How do I run multiple processes of my app to use more CPU cores?", "expected": ["deployment/server-workers.md"], "must_contain": ["--workers 4"]},
+  {"question": "My app is served under a URL prefix by a reverse proxy and the docs page breaks. What do I do?", "expected": ["advanced/behind-a-proxy.md"], "must_contain": ["--root-path", "root_path="]},
+  {"question": "How do I protect an endpoint with a simple username and password prompt?", "expected": ["advanced/security/http-basic-auth.md"], "must_contain": ["HTTPBasic("]}
+]
