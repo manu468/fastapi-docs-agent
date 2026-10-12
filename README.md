@@ -28,6 +28,8 @@ The main question: **does letting the model run its own searches beat a fixed "r
 
 "Agent + stricter prompt" adds one rule: do not add advice, comparisons or background that the excerpts don't state.
 
+Project 1 passed the top 10 chunks from one search to the model. The agent gets 5 per search and ends up with about 10 distinct excerpts per question, so both see a similar amount of text.
+
 > `agent_results.json` contains the last run (agent + stricter prompt). The earlier agent run was overwritten, so its numbers appear only in the table above.
 
 ## What I learned
