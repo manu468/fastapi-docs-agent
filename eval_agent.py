@@ -9,8 +9,23 @@ Results go to agent_results.json (grade_results.json from Project 1 is not touch
 import json
 import sys
 
-from agent import run_agent
+# from agent import run_agent -- commenting out after adding agent mcp and mcp server, replcaed with below code
+import asyncio
+
+from agent_mcp import run_agent as run_agent_async
+
+
+def run_agent(question, verbose=False):
+    # agent_mcp.run_agent is async; this wrapper lets the rest of the file call it normally
+    return asyncio.run(run_agent_async(question, verbose=verbose))
+
+
 from grade import judge, summarize  # the same LLM judge used for Project 1
+
+def root_causes(e):
+    if isinstance(e, BaseExceptionGroup):
+        return [c for sub in e.exceptions for c in root_causes(sub)]
+    return [e]
 
 if __name__ == "__main__":
     limit = int(sys.argv[1]) if len(sys.argv) > 1 else None
@@ -24,6 +39,7 @@ if __name__ == "__main__":
     tot = {"claims": 0, "supported": 0, "cited": 0, "cite_ok": 0}
     searches, excerpt_counts = [], []
     retrieved_count = refused_count = truncated_count = no_answer_count = graded = 0
+    error_count = 0
 
     for item in eval_set:
         question = item["question"]
@@ -35,8 +51,14 @@ if __name__ == "__main__":
                 results.append({"question": question, "queries": trace["queries"], "finished": False})
                 continue
             verdict = judge(question, trace["excerpts"], trace["answer"])
+        # except Exception as e:
+        #     print("ERROR |", question, "|", e)
+        #     continue
         except Exception as e:
-            print("ERROR |", question, "|", e)
+            error_count += 1
+            print("ERROR |", question)
+            for c in root_causes(e):
+                print("      cause:", repr(c))
             continue
 
         graded += 1
@@ -83,7 +105,8 @@ if __name__ == "__main__":
             }
         )
 
-    with open("agent_results.json", "w", encoding="utf-8") as f:
+    # with open("agent_results.json", "w", encoding="utf-8") as f:
+    with open("agent_mcp_results.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
     print()
@@ -99,4 +122,7 @@ if __name__ == "__main__":
         print(f"Answers cut off at max_tokens:       {truncated_count}/{graded}")
     if no_answer_count:
         print(f"No answer (hit turn cap):            {no_answer_count}")
-    print("Full details saved to agent_results.json")
+    if error_count:
+        print(f"ERRORS (not graded):                 {error_count}")
+    # print("Full details saved to agent_results.json")
+        print("Full details saved to agent_mcp_results.json")

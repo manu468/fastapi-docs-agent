@@ -14,6 +14,7 @@
 # if __name__ == "__main__":
 #     mcp.run()  # talks over stdin/stdout by default
 
+import json
 from typing import Annotated
 
 from mcp.server.fastmcp import FastMCP
@@ -31,13 +32,10 @@ def search_docs(
     query: Annotated[str, Field(description="What to look up, e.g. 'background tasks'")],
 ) -> str:
     """Search the official FastAPI documentation and return the most relevant excerpts.
-    Call it once per distinct topic, with a short, specific query."""
+    Call it once per distinct topic, with a short, specific query.
+    Returns a JSON list of {source, text} excerpts."""
     hits = retrieve(query, n=RESULTS_PER_SEARCH)
-    if not hits:
-        return "No results found."
-    return "\n\n".join(
-        f"[{i}] (source: {h['source']})\n{h['text']}" for i, h in enumerate(hits, 1)
-    )
+    return json.dumps([{"source": h["source"], "text": h["text"]} for h in hits])
 
 
 if __name__ == "__main__":
